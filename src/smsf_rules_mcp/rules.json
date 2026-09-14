@@ -1,0 +1,1252 @@
+{
+  "generated_on": "2026-09-14",
+  "corpus_url": "https://smsfcore.com/rules",
+  "provenance": {
+    "rules": {
+      "repo": "smsfcore-landing",
+      "path": "content/rules.ts",
+      "commit": "42007ea",
+      "commit_date": "2026-08-24",
+      "verified_on": null
+    },
+    "glossary": {
+      "repo": "smsfcore-landing",
+      "path": "content/glossary.ts",
+      "commit": "11effe7",
+      "commit_date": "2026-08-08",
+      "verified_on": null
+    },
+    "caps": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/caps/caps-math.ts",
+      "commit": "aeffcbe",
+      "commit_date": "2026-09-14",
+      "verified_on": "2026-07-07"
+    },
+    "mcaps": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/mcaps/mcaps-math.ts",
+      "commit": "e10b9aa",
+      "commit_date": "2026-07-27",
+      "verified_on": "2026-07-11"
+    },
+    "div296": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/div296/div296-math.ts",
+      "commit": "644cc52",
+      "commit_date": "2026-07-09",
+      "verified_on": "2026-07-06"
+    },
+    "drawdown": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/pension/drawdown-math.ts",
+      "commit": "a8d1e4b",
+      "commit_date": "2026-07-09",
+      "verified_on": "2026-07-07"
+    },
+    "deadlines": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/compliance/deadlines.ts",
+      "commit": "9ab4da6",
+      "commit_date": "2026-08-29",
+      "verified_on": "2026-07-10"
+    },
+    "tbar": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/tbar/tbar-math.ts",
+      "commit": "2a6fd9a",
+      "commit_date": "2026-07-16",
+      "verified_on": "2026-07-16"
+    },
+    "citations": {
+      "repo": "smsfcore-product",
+      "path": "src/lib/calc/citations.ts",
+      "commit": "1dd5319",
+      "commit_date": "2026-09-10",
+      "verified_on": "2026-07-07"
+    }
+  },
+  "rules": [
+    {
+      "id": "45-day-holding-period",
+      "title": "The 45-day holding period rule, counted day by day",
+      "category": "franking",
+      "summary": "Franking credits attach to a dividend only if the shares were held at risk for at least 45 clear days around the ex-dividend date. The acquisition day and the disposal day are both excluded from the count, so the earliest disposal that keeps the credits is acquisition plus 46 days.",
+      "statute": "Income Tax Assessment Act 1936 (Cth) s 160APHO",
+      "figures": [
+        {
+          "label": "Acquisition (day 0, excluded from the count)",
+          "text": "Mon 2 Mar 2026"
+        },
+        {
+          "label": "Clear days at risk required",
+          "text": "45 (days 1 through 45)"
+        },
+        {
+          "label": "Disposal day is also excluded",
+          "text": "so day 46 is the boundary"
+        },
+        {
+          "label": "Earliest disposal with credits intact",
+          "text": "Fri 17 Apr 2026 (acquisition + 46 days)"
+        }
+      ],
+      "example_heading": "A parcel bought on Monday 2 March 2026",
+      "example_footnote": "Certain preference shares carry a 90-day count instead of 45. Disposals are traced last-in-first-out per parcel (s 160APHI).",
+      "mechanics": [
+        "Count starts the day after acquisition: the acquisition day itself is day 0 and does not count.",
+        "45 clear days at risk are required; the disposal day is also excluded, which places the earliest credit-safe disposal at acquisition + 46 calendar days.",
+        "Disposals are matched to parcels last-in-first-out (s 160APHI), so selling any shares in the company restarts the question for the most recently bought parcel first.",
+        "The small-shareholder exemption (s 160APHT) applies to individuals only; an SMSF cannot use it, at any dollar amount."
+      ],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1936 (Cth) s 160APHO (holding period requirement)",
+          "url": "https://www.legislation.gov.au/Series/C1936A00027",
+          "resolved_via": "ITAA 1936 s 160APHO(2)(a)(i) (product citations table)"
+        },
+        {
+          "label": "Income Tax Assessment Act 1936 (Cth) s 160APHI (LIFO parcel ordering)",
+          "url": "https://www.legislation.gov.au/Series/C1936A00027",
+          "resolved_via": "ITAA 1936 s 160APHI(4) (product citations table)"
+        },
+        {
+          "label": "ATO: franking credits, holding period rule and related payments rule"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C1936A00027",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "source_commit": "42007ea",
+      "source_commit_date": "2026-08-24",
+      "corpus_url": "https://smsfcore.com/rules/45-day-holding-period"
+    },
+    {
+      "id": "franking-gross-up",
+      "title": "Franking gross-up arithmetic at the 30% company rate",
+      "category": "franking",
+      "summary": "A fully franked dividend arrives with company tax of 30% already paid on the underlying profit. The recipient grosses the cash amount up by dividing by 0.70, includes the grossed-up figure in assessable income, and receives the difference back as a tax offset, refundable for a complying superannuation fund.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) Division 207",
+      "figures": [
+        {
+          "label": "Cash dividend received, fully franked",
+          "cents": 700000
+        },
+        {
+          "label": "Grossed-up amount ($7,000 ÷ 0.70)",
+          "cents": 1000000
+        },
+        {
+          "label": "Franking credit (gross-up − cash)",
+          "cents": 300000
+        },
+        {
+          "label": "Accumulation phase: fund tax at 15% of $10,000",
+          "cents": 150000
+        },
+        {
+          "label": "Accumulation phase: offset remaining as refund",
+          "cents": 150000
+        },
+        {
+          "label": "Retirement phase (0% on that income): offset refunded in full",
+          "cents": 300000
+        }
+      ],
+      "example_heading": "A $7,000 fully franked cash dividend",
+      "example_footnote": "Partially franked dividends scale the credit by the franking percentage; the divisor mechanics are unchanged.",
+      "mechanics": [
+        "Gross-up: cash dividend ÷ (1 − 0.30). At 30% company tax the credit equals 3/7 of the cash amount.",
+        "The grossed-up amount (cash + credit) is what enters the fund's assessable income.",
+        "The credit then applies as a tax offset against the fund's 15% rate; for a complying fund any excess is refundable.",
+        "Income supporting retirement-phase pensions is taxed at 0% (ECPI), so on that income the whole credit comes back, subject to the 45-day holding period rule qualifying the credit at all."
+      ],
+      "sources": [
+        {
+          "label": "ATO: allocating franking credits (imputation)",
+          "url": "https://www.ato.gov.au/businesses-and-organisations/corporate-tax-measures-and-assurance/imputation/paying-dividends-and-other-distributions/allocating-franking-credits"
+        },
+        {
+          "label": "Income Tax Assessment Act 1997 (Cth) Division 207 (gross-up and tax offset)",
+          "url": "https://www.legislation.gov.au/Series/C2004A05138",
+          "resolved_via": "ITAA 1997 Div 207 s 207-20(1) (product citations table)"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/businesses-and-organisations/corporate-tax-measures-and-assurance/imputation/paying-dividends-and-other-distributions/allocating-franking-credits",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "source_commit": "42007ea",
+      "source_commit_date": "2026-08-24",
+      "corpus_url": "https://smsfcore.com/rules/franking-gross-up"
+    },
+    {
+      "id": "bring-forward-bands",
+      "title": "Bring-forward bands are derived from two caps, FY 2026-27",
+      "category": "contributions",
+      "summary": "The non-concessional bring-forward bands are not published numbers: each band ceiling is the general transfer balance cap minus two, one or zero annual caps. When either cap indexes, every band moves. These are the FY 2026-27 values after the 1 July 2026 indexation.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) s 292-85 and ATO published caps, FY 2026-27",
+      "figures": [
+        {
+          "label": "General transfer balance cap (from 1 Jul 2026)",
+          "cents": 210000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Annual non-concessional cap (4 × concessional cap)",
+          "cents": 13000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Three-year band ceiling ($2.1m − 2 × $130k)",
+          "cents": 184000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Three-year total available",
+          "cents": 39000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Two-year band ceiling ($2.1m − 1 × $130k)",
+          "cents": 197000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Two-year total available",
+          "cents": 26000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Standard annual cap only, balance under $2.1m",
+          "cents": 13000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "At or above $2.1m: non-concessional cap for the year",
+          "cents": 0,
+          "financial_year": "2026-27"
+        }
+      ],
+      "example_heading": "FY 2026-27 bands, derived from the two caps",
+      "example_footnote": "Eligibility is tested on total super balance at the prior 30 June and on being under 75 at 1 July of the contribution year.",
+      "mechanics": [
+        "Band ceiling formula: general transfer balance cap − k × annual non-concessional cap, where k is 2 for the three-year band and 1 for the two-year band.",
+        "The general transfer balance cap indexed $2.0m → $2.1m on 1 July 2026, so every band ceiling moved by $100,000 on the same day.",
+        "The measurement date is the 30 June before the contribution year, not the day of the contribution.",
+        "A balance at or above the general transfer balance cap makes the non-concessional cap for the year nil."
+      ],
+      "sources": [
+        {
+          "label": "ATO: non-concessional contributions cap and bring-forward arrangements",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation on 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap",
+      "verified_on": "2026-07-11",
+      "verified_by": "smsfcore-product/src/lib/mcaps/mcaps-math.ts",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "source_commit": "42007ea",
+      "source_commit_date": "2026-08-24",
+      "corpus_url": "https://smsfcore.com/rules/bring-forward-bands"
+    },
+    {
+      "id": "carry-forward-concessional-gate",
+      "title": "Carry-forward concessional contributions and the $500,000 gate",
+      "category": "contributions",
+      "summary": "Unused concessional cap from up to five prior financial years can be added to the current year's cap, but only if total super balance at the prior 30 June is strictly under $500,000. A balance of exactly $500,000 fails the gate.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) s 291-20",
+      "figures": [
+        {
+          "label": "Concessional cap, FY 2026-27",
+          "cents": 3250000
+        },
+        {
+          "label": "Total super balance at 30 Jun 2026",
+          "cents": 48000000
+        },
+        {
+          "label": "Gate test: balance under $500,000",
+          "text": "passed ($480,000 < $500,000)"
+        },
+        {
+          "label": "Unused cap carried from the prior five years",
+          "cents": 3000000
+        },
+        {
+          "label": "Concessional cap available this year ($32,500 + $30,000)",
+          "cents": 6250000
+        },
+        {
+          "label": "Same unused amounts at a $500,000 balance",
+          "text": "gate fails, standard cap only"
+        }
+      ],
+      "example_heading": "A member under the gate with $30,000 of unused cap",
+      "example_footnote": "Unused amounts expire after five years, oldest first, and the gate is retested against the 30 June balance every year.",
+      "mechanics": [
+        "The gate is on total super balance at the 30 June before the contribution year, and it is a strict less-than: $499,999.99 passes, $500,000.00 does not.",
+        "Unused cap accrues from FY 2018-19 onwards and expires five years after the year it arose.",
+        "The current-year cap ($32,500 in FY 2026-27, AWOTE-indexed) is used first; carried amounts apply oldest first.",
+        "The gate is retested each year; a balance that crosses $500,000 pauses access without erasing the carried amounts that are still inside their five-year window."
+      ],
+      "sources": [
+        {
+          "label": "ATO: contributions caps (concessional cap and unused carry-forward)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "Income Tax Assessment Act 1997 (Cth) s 291-20 (unused concessional cap carry-forward)"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps",
+      "verified_on": "2026-07-11",
+      "verified_by": "smsfcore-product/src/lib/mcaps/mcaps-math.ts",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "source_commit": "42007ea",
+      "source_commit_date": "2026-08-24",
+      "corpus_url": "https://smsfcore.com/rules/carry-forward-concessional-gate"
+    },
+    {
+      "id": "minimum-pension-drawdown",
+      "title": "Minimum pension drawdown percentages by age band",
+      "category": "pension",
+      "summary": "Every 1 July, a retirement-phase pension recalculates its minimum annual payment: the Schedule 7 percentage for the member's age on that day, applied to that day's pension balance, rounded to the nearest $10.",
+      "statute": "Superannuation Industry (Supervision) Regulations 1994 (Cth) Schedule 7",
+      "figures": [
+        {
+          "label": "Schedule 7 bands",
+          "text": "under 65: 4% · 65-74: 5% · 75-79: 6% · 80-84: 7% · 85-89: 9% · 90-94: 11% · 95+: 14%"
+        },
+        {
+          "label": "Pension balance at 1 Jul 2026",
+          "cents": 85000000
+        },
+        {
+          "label": "Band applying at age 76",
+          "text": "75-79 → 6%"
+        },
+        {
+          "label": "Minimum annual payment (6% × $850,000, nearest $10)",
+          "cents": 5100000
+        }
+      ],
+      "example_heading": "Age 76 at 1 July with an $850,000 pension balance",
+      "example_footnote": "Pensions commenced during the year pro-rate by days remaining; a pension commenced on or after 1 June has no minimum for that year.",
+      "mechanics": [
+        "The inputs are both fixed on 1 July: the member's age on that day and the pension balance on that day.",
+        "The Schedule 7 percentage steps at ages 65, 75, 80, 85, 90 and 95.",
+        "The product is rounded to the nearest $10. These are the standard rates; the COVID-era 50% reduction ended 30 June 2023.",
+        "Paying less than the minimum risks the pension ceasing to be in retirement phase for the year, which is an ECPI question, not a rounding one."
+      ],
+      "sources": [
+        {
+          "label": "ATO: income stream (pension) rules and minimum payments",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/paying-smsf-benefits/income-stream-pension-rules-and-payments"
+        },
+        {
+          "label": "SIS Regulations 1994 (Cth) Schedule 7 (minimum percentage factors)"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/paying-smsf-benefits/income-stream-pension-rules-and-payments",
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/pension/drawdown-math.ts",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "source_commit": "42007ea",
+      "source_commit_date": "2026-08-24",
+      "corpus_url": "https://smsfcore.com/rules/minimum-pension-drawdown"
+    },
+    {
+      "id": "division-296-tiers",
+      "title": "Division 296 splits realised earnings across two tiers by balance",
+      "category": "division-296",
+      "summary": "Division 296 commenced 1 July 2026. It applies additional tax to realised earnings only (unrealised gains are not taxed under the final law), proportioned to how much of the total super balance sits between $3m and $10m (15%) and above $10m (a further 10%, 25% cumulative).",
+      "statute": "Income Tax Assessment Act 1997 (Cth) Division 296 (Act No. C2026A00008)",
+      "figures": [
+        {
+          "label": "Total super balance at 30 June",
+          "cents": 1500000000
+        },
+        {
+          "label": "Realised earnings for the year",
+          "cents": 90000000
+        },
+        {
+          "label": "Tier 1 slice of balance ($3m to $10m)",
+          "cents": 700000000
+        },
+        {
+          "label": "Tier 1 attributed earnings ($900k × 7/15)",
+          "cents": 42000000
+        },
+        {
+          "label": "Tier 1 additional tax at 15%",
+          "cents": 6300000
+        },
+        {
+          "label": "Tier 2 slice of balance (above $10m)",
+          "cents": 500000000
+        },
+        {
+          "label": "Tier 2 attributed earnings ($900k × 5/15)",
+          "cents": 30000000
+        },
+        {
+          "label": "Tier 2 additional tax at 25%",
+          "cents": 7500000
+        },
+        {
+          "label": "Total Division 296 tax",
+          "cents": 13800000
+        }
+      ],
+      "example_heading": "A $15m total super balance with $900,000 of realised earnings",
+      "example_footnote": "Both thresholds are indexed from commencement ($3m in $150k steps, $10m in $500k steps); these are the commencement-year values.",
+      "mechanics": [
+        "Attribution is proportional: earnings × (slice of balance ÷ total balance) for each tier.",
+        "Tier 1 covers the balance between $3m and $10m at 15%; tier 2 covers the balance above $10m at 25% cumulative.",
+        "The base is realised earnings under ordinary tax principles; the 2023 unrealised-gains design was not enacted.",
+        "Assessment is per individual across all their super interests, not per fund."
+      ],
+      "sources": [
+        {
+          "label": "Treasury Laws Amendment (Better Targeted Superannuation Concessions) Act 2026 (C2026A00008)",
+          "url": "https://www.legislation.gov.au/C2026A00008/latest"
+        },
+        {
+          "label": "ATO: Better Targeted Super Concessions is law (SMSF newsroom)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/C2026A00008/latest",
+      "verified_on": "2026-07-06",
+      "verified_by": "smsfcore-product/src/lib/div296/div296-math.ts",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "source_commit": "42007ea",
+      "source_commit_date": "2026-08-24",
+      "corpus_url": "https://smsfcore.com/rules/division-296-tiers"
+    },
+    {
+      "id": "45-day-holding-period-rule",
+      "title": "45-day holding period rule",
+      "category": "glossary",
+      "summary": "A franking integrity rule requiring shares to be held at risk for at least 45 days (90 for certain preference shares) around the ex-dividend date before the attached franking credits can be claimed. The day of acquisition and the day of disposal are excluded from the count. The small-shareholder exemption (s 160APHT) that lets individual taxpayers skip the rule does not apply to SMSFs. The boundary is the entity, not a dollar threshold.",
+      "statute": "Income Tax Assessment Act 1936 (Cth) s 160APHO; Income Tax Assessment Act 1936 (Cth) s 160APHT (small-shareholder exemption; individuals only)",
+      "figures": [],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1936 (Cth) s 160APHO",
+          "url": "https://www.legislation.gov.au/Series/C1936A00027",
+          "resolved_via": "ITAA 1936 s 160APHO(2)(a)(i) (product citations table)"
+        },
+        {
+          "label": "Income Tax Assessment Act 1936 (Cth) s 160APHT (small-shareholder exemption; individuals only)",
+          "url": "https://www.legislation.gov.au/Series/C1936A00027",
+          "resolved_via": "ITAA 1936 s 160APHT(1) (product citations table)"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C1936A00027",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/glossary.ts",
+      "source_commit": "11effe7",
+      "source_commit_date": "2026-08-08",
+      "corpus_url": "https://smsfcore.com/glossary/45-day-holding-period-rule"
+    },
+    {
+      "id": "franking-credit",
+      "title": "Franking credit",
+      "category": "glossary",
+      "summary": "A credit attached to a dividend representing company tax already paid on the underlying profit. A qualifying recipient grosses up assessable income by the credit and receives a corresponding tax offset; for complying superannuation funds an excess offset can be refundable.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) Division 207",
+      "figures": [],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1997 (Cth) Division 207",
+          "url": "https://www.legislation.gov.au/Series/C2004A05138",
+          "resolved_via": "ITAA 1997 Div 207 s 207-20(1) (product citations table)"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C2004A05138",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/glossary.ts",
+      "source_commit": "11effe7",
+      "source_commit_date": "2026-08-08",
+      "corpus_url": "https://smsfcore.com/glossary/franking-credit"
+    },
+    {
+      "id": "lifo-disposal-tracing",
+      "title": "LIFO disposal tracing",
+      "category": "glossary",
+      "summary": "The ordering rule the franking holding-period provisions apply to disposals: the most recently acquired parcel is treated as sold first. This is distinct from the cost-base choices available for capital gains tax, and it determines which parcel's day count a sale interrupts.",
+      "statute": "Income Tax Assessment Act 1936 (Cth) s 160APHI",
+      "figures": [],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1936 (Cth) s 160APHI",
+          "url": "https://www.legislation.gov.au/Series/C1936A00027",
+          "resolved_via": "ITAA 1936 s 160APHI(4) (product citations table)"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C1936A00027",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/glossary.ts",
+      "source_commit": "11effe7",
+      "source_commit_date": "2026-08-08",
+      "corpus_url": "https://smsfcore.com/glossary/lifo-disposal-tracing"
+    },
+    {
+      "id": "ecpi",
+      "title": "ECPI (exempt current pension income)",
+      "category": "glossary",
+      "summary": "The share of a complying superannuation fund's income that is exempt because it supports retirement-phase pensions, worked out under the segregated or proportionate method. A fund's ECPI position interacts with how its franking offsets land in the annual return.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) ss 295-385, 295-390",
+      "figures": [],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1997 (Cth) ss 295-385, 295-390",
+          "url": "https://www.legislation.gov.au/Series/C2004A05138",
+          "resolved_via": "ITAA 1997 s 295-385 (product citations table)"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C2004A05138",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/glossary.ts",
+      "source_commit": "11effe7",
+      "source_commit_date": "2026-08-08",
+      "corpus_url": "https://smsfcore.com/glossary/ecpi"
+    },
+    {
+      "id": "trans-tasman-imputation",
+      "title": "Trans-Tasman imputation",
+      "category": "glossary",
+      "summary": "The arrangement under which some New Zealand companies attach Australian franking credits to their dividends. Those Australian credits are recognised for Australian shareholders; New Zealand imputation credits, by contrast, are not claimable in Australia and are informational only in an Australian return.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) ss 220-400, 220-405; ATO QC 50645 (trans-Tasman imputation)",
+      "figures": [],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1997 (Cth) ss 220-400, 220-405",
+          "url": "https://www.legislation.gov.au/Series/C2004A05138",
+          "resolved_via": "ITAA 1997 s 220-400 (product citations table)"
+        },
+        {
+          "label": "ATO QC 50645 (trans-Tasman imputation)"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C2004A05138",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/glossary.ts",
+      "source_commit": "11effe7",
+      "source_commit_date": "2026-08-08",
+      "corpus_url": "https://smsfcore.com/glossary/trans-tasman-imputation"
+    },
+    {
+      "id": "qualified-person",
+      "title": "Qualified person",
+      "category": "glossary",
+      "summary": "The status a taxpayer needs in relation to a franked dividend for the franking credit and tax offset to be available. Where the qualified-person tests are not met, most commonly through the 45-day holding period rule, the gross-up and offset are denied for that distribution.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) s 207-145; Income Tax Assessment Act 1936 (Cth) former Div 1A provisions (holding-period tests)",
+      "figures": [],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "Income Tax Assessment Act 1997 (Cth) s 207-145",
+          "url": "https://www.legislation.gov.au/Series/C2004A05138",
+          "resolved_via": "ITAA 1997 Div 207 s 207-145(1) (product citations table)"
+        },
+        {
+          "label": "Income Tax Assessment Act 1936 (Cth) former Div 1A provisions (holding-period tests)"
+        }
+      ],
+      "primary_source_url": "https://www.legislation.gov.au/Series/C2004A05138",
+      "verified_on": null,
+      "verified_by": null,
+      "source_file": "smsfcore-landing/content/glossary.ts",
+      "source_commit": "11effe7",
+      "source_commit_date": "2026-08-08",
+      "corpus_url": "https://smsfcore.com/glossary/qualified-person"
+    },
+    {
+      "id": "contribution-caps-fy2024-25",
+      "title": "Contribution caps and total super balance thresholds, FY 2024-25",
+      "category": "caps",
+      "summary": "For the financial year starting 1 July 2024: concessional cap $30,000, non-concessional cap $120,000 (four times the concessional cap), general transfer balance cap $1,900,000. The non-concessional cap is nil when total super balance at the prior 30 June is at or above the general transfer balance cap. Bring-forward bands are derived: three years available below $1,660,000, two years below $1,780,000. Carry-forward of unused concessional cap needs a prior 30 June balance strictly under $500,000.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) ss 291-20, 292-85; ATO published caps",
+      "figures": [
+        {
+          "label": "Concessional cap",
+          "cents": 3000000,
+          "financial_year": "2024-25"
+        },
+        {
+          "label": "Non-concessional cap",
+          "cents": 12000000,
+          "financial_year": "2024-25"
+        },
+        {
+          "label": "General transfer balance cap",
+          "cents": 190000000,
+          "financial_year": "2024-25"
+        },
+        {
+          "label": "Three-year bring-forward available while TSB below",
+          "cents": 166000000,
+          "financial_year": "2024-25"
+        },
+        {
+          "label": "Two-year bring-forward available while TSB below",
+          "cents": 178000000,
+          "financial_year": "2024-25"
+        },
+        {
+          "label": "Carry-forward concessional gate (TSB strictly below)",
+          "cents": 50000000,
+          "financial_year": "2024-25"
+        }
+      ],
+      "mechanics": [
+        "Non-concessional cap = 4 x concessional cap.",
+        "Bring-forward band k is available while prior 30 June TSB is below general TBC minus (k minus 1) x non-concessional cap, and the member is under 75 on 1 July.",
+        "Exceeding the annual non-concessional cap in a year triggers the bring-forward period.",
+        "Carry-forward: unused concessional cap from up to five prior years is available only while prior 30 June TSB is strictly under the gate."
+      ],
+      "sources": [
+        {
+          "label": "ATO: contributions caps (key rates and thresholds)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "ATO: concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: non-concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps",
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/caps/caps-math.ts",
+      "source_file": "smsfcore-product/src/lib/caps/caps-math.ts",
+      "source_commit": "aeffcbe",
+      "source_commit_date": "2026-09-14",
+      "corpus_url": "https://smsfcore.com/rules/bring-forward-bands"
+    },
+    {
+      "id": "contribution-caps-fy2025-26",
+      "title": "Contribution caps and total super balance thresholds, FY 2025-26",
+      "category": "caps",
+      "summary": "For the financial year starting 1 July 2025: concessional cap $30,000, non-concessional cap $120,000 (four times the concessional cap), general transfer balance cap $2,000,000. The non-concessional cap is nil when total super balance at the prior 30 June is at or above the general transfer balance cap. Bring-forward bands are derived: three years available below $1,760,000, two years below $1,880,000. Carry-forward of unused concessional cap needs a prior 30 June balance strictly under $500,000.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) ss 291-20, 292-85; ATO published caps",
+      "figures": [
+        {
+          "label": "Concessional cap",
+          "cents": 3000000,
+          "financial_year": "2025-26"
+        },
+        {
+          "label": "Non-concessional cap",
+          "cents": 12000000,
+          "financial_year": "2025-26"
+        },
+        {
+          "label": "General transfer balance cap",
+          "cents": 200000000,
+          "financial_year": "2025-26"
+        },
+        {
+          "label": "Three-year bring-forward available while TSB below",
+          "cents": 176000000,
+          "financial_year": "2025-26"
+        },
+        {
+          "label": "Two-year bring-forward available while TSB below",
+          "cents": 188000000,
+          "financial_year": "2025-26"
+        },
+        {
+          "label": "Carry-forward concessional gate (TSB strictly below)",
+          "cents": 50000000,
+          "financial_year": "2025-26"
+        }
+      ],
+      "mechanics": [
+        "Non-concessional cap = 4 x concessional cap.",
+        "Bring-forward band k is available while prior 30 June TSB is below general TBC minus (k minus 1) x non-concessional cap, and the member is under 75 on 1 July.",
+        "Exceeding the annual non-concessional cap in a year triggers the bring-forward period.",
+        "Carry-forward: unused concessional cap from up to five prior years is available only while prior 30 June TSB is strictly under the gate."
+      ],
+      "sources": [
+        {
+          "label": "ATO: contributions caps (key rates and thresholds)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "ATO: concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: non-concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps",
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/caps/caps-math.ts",
+      "source_file": "smsfcore-product/src/lib/caps/caps-math.ts",
+      "source_commit": "aeffcbe",
+      "source_commit_date": "2026-09-14",
+      "corpus_url": "https://smsfcore.com/rules/bring-forward-bands"
+    },
+    {
+      "id": "contribution-caps-fy2026-27",
+      "title": "Contribution caps and total super balance thresholds, FY 2026-27",
+      "category": "caps",
+      "summary": "For the financial year starting 1 July 2026: concessional cap $32,500, non-concessional cap $130,000 (four times the concessional cap), general transfer balance cap $2,100,000. The non-concessional cap is nil when total super balance at the prior 30 June is at or above the general transfer balance cap. Bring-forward bands are derived: three years available below $1,840,000, two years below $1,970,000. Carry-forward of unused concessional cap needs a prior 30 June balance strictly under $500,000.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) ss 291-20, 292-85; ATO published caps",
+      "figures": [
+        {
+          "label": "Concessional cap",
+          "cents": 3250000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Non-concessional cap",
+          "cents": 13000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "General transfer balance cap",
+          "cents": 210000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Three-year bring-forward available while TSB below",
+          "cents": 184000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Two-year bring-forward available while TSB below",
+          "cents": 197000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Carry-forward concessional gate (TSB strictly below)",
+          "cents": 50000000,
+          "financial_year": "2026-27"
+        }
+      ],
+      "mechanics": [
+        "Non-concessional cap = 4 x concessional cap.",
+        "Bring-forward band k is available while prior 30 June TSB is below general TBC minus (k minus 1) x non-concessional cap, and the member is under 75 on 1 July.",
+        "Exceeding the annual non-concessional cap in a year triggers the bring-forward period.",
+        "Carry-forward: unused concessional cap from up to five prior years is available only while prior 30 June TSB is strictly under the gate."
+      ],
+      "sources": [
+        {
+          "label": "ATO: contributions caps (key rates and thresholds)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "ATO: concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: non-concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps",
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/caps/caps-math.ts",
+      "source_file": "smsfcore-product/src/lib/caps/caps-math.ts",
+      "source_commit": "aeffcbe",
+      "source_commit_date": "2026-09-14",
+      "corpus_url": "https://smsfcore.com/rules/bring-forward-bands"
+    },
+    {
+      "id": "division-296-thresholds",
+      "title": "Division 296 thresholds and rates at commencement",
+      "category": "division-296",
+      "summary": "Division 296 commenced 1 July 2026 and applies to realised earnings only. Tier 1 is 15% on the share of earnings attributable to total super balance between $3,000,000 and $10,000,000; tier 2 is 25% on the share above $10,000,000. Total super balance is first tested at 30 June 2027. Both thresholds are indexed from commencement.",
+      "statute": "Income Tax Assessment Act 1997 (Cth) Division 296 (Act No. C2026A00008)",
+      "figures": [
+        {
+          "label": "Lower threshold",
+          "cents": 300000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Upper threshold",
+          "cents": 1000000000,
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Tier 1 rate",
+          "text": "15%",
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "Tier 2 rate (cumulative)",
+          "text": "25%",
+          "financial_year": "2026-27"
+        },
+        {
+          "label": "First TSB test date",
+          "text": "2027-06-30",
+          "financial_year": "2026-27"
+        }
+      ],
+      "mechanics": [
+        "tier 1 tax = rate1 x earnings x (min(TSB, upper) minus lower) / TSB",
+        "tier 2 tax = rate2 x earnings x (TSB minus upper) / TSB",
+        "Assessed per individual across all super interests, not per fund."
+      ],
+      "sources": [
+        {
+          "label": "ATO: Better Targeted Super Concessions is law",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law"
+        },
+        {
+          "label": "Treasury Laws Amendment (Better Targeted Superannuation Concessions) Act 2026",
+          "url": "https://www.legislation.gov.au/C2026A00008/latest"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law",
+      "verified_on": "2026-07-06",
+      "verified_by": "smsfcore-product/src/lib/div296/div296-math.ts",
+      "source_file": "smsfcore-product/src/lib/div296/div296-math.ts",
+      "source_commit": "644cc52",
+      "source_commit_date": "2026-07-09",
+      "corpus_url": "https://smsfcore.com/rules/division-296-tiers"
+    },
+    {
+      "id": "pension-minimum-percentages",
+      "title": "Account-based pension minimum drawdown percentages by age",
+      "category": "pension",
+      "summary": "The minimum annual payment is the Schedule 7 percentage for the member's age at 1 July (or at commencement) applied to the pension balance on that day, rounded to the nearest $10. A pension commenced on or after 1 June has no minimum for that year; one commenced mid-year pro-rates by days remaining.",
+      "statute": "Superannuation Industry (Supervision) Regulations 1994 (Cth) Schedule 7, reg 1.07D",
+      "figures": [
+        {
+          "label": "Age 0 to 64",
+          "text": "4%"
+        },
+        {
+          "label": "Age 65 to 74",
+          "text": "5%"
+        },
+        {
+          "label": "Age 75 to 79",
+          "text": "6%"
+        },
+        {
+          "label": "Age 80 to 84",
+          "text": "7%"
+        },
+        {
+          "label": "Age 85 to 89",
+          "text": "9%"
+        },
+        {
+          "label": "Age 90 to 94",
+          "text": "11%"
+        },
+        {
+          "label": "Age 95 and over",
+          "text": "14%"
+        }
+      ],
+      "mechanics": [
+        "Percentage steps at ages 65, 75, 80, 85, 90 and 95.",
+        "Rounded to the nearest $10.",
+        "Standard rates apply; the temporary 50% reduction ended 30 June 2023."
+      ],
+      "sources": [
+        {
+          "label": "ATO: payments from super (minimum annual payments by age)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/payments-from-super"
+        },
+        {
+          "label": "ATO: income stream (pension) rules and payments (SMSF)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/paying-smsf-benefits/income-stream-pension-rules-and-payments"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/payments-from-super",
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/pension/drawdown-math.ts",
+      "source_file": "smsfcore-product/src/lib/pension/drawdown-math.ts",
+      "source_commit": "a8d1e4b",
+      "source_commit_date": "2026-07-09",
+      "corpus_url": "https://smsfcore.com/rules/minimum-pension-drawdown"
+    },
+    {
+      "id": "deadline-tbar-quarterly",
+      "title": "TBAR quarter due",
+      "category": "deadlines",
+      "summary": "Transfer balance events for a quarter must reach the ATO within 28 days of quarter end: 28 October, 28 January, 28 April and 28 July. All SMSFs report quarterly since 1 July 2023.",
+      "statute": null,
+      "figures": [
+        {
+          "label": "Rule",
+          "text": "quarterly_28_days"
+        }
+      ],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "ATO: transfer balance account reporting",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/reporting-and-administrative-obligations/transfer-balance-account-reporting"
+        },
+        {
+          "label": "ATO: TBAR instructions, when to lodge",
+          "url": "https://www.ato.gov.au/forms-and-instructions/superannuation-transfer-balance-account-report-instructions/when-to-lodge"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/reporting-and-administrative-obligations/transfer-balance-account-reporting",
+      "verified_on": "2026-07-10",
+      "verified_by": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_file": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_commit": "9ab4da6",
+      "source_commit_date": "2026-08-29",
+      "corpus_url": "https://smsfcore.com/rules"
+    },
+    {
+      "id": "deadline-pension-minimum",
+      "title": "Pension minimums paid by 30 June",
+      "category": "deadlines",
+      "summary": "Each retirement-phase pension must have paid at least its statutory minimum by 30 June of the financial year.",
+      "statute": null,
+      "figures": [
+        {
+          "label": "Rule",
+          "text": "fy_end"
+        }
+      ],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "ATO: income stream (pension) rules and payments (SMSF)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/paying-smsf-benefits/income-stream-pension-rules-and-payments"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/paying-smsf-benefits/income-stream-pension-rules-and-payments",
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_file": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_commit": "9ab4da6",
+      "source_commit_date": "2026-08-29",
+      "corpus_url": "https://smsfcore.com/rules"
+    },
+    {
+      "id": "deadline-div296-first-test",
+      "title": "Division 296 first total super balance test",
+      "category": "deadlines",
+      "summary": "Total super balance is first tested at 30 June 2027 for the commencement year of Division 296.",
+      "statute": null,
+      "figures": [
+        {
+          "label": "Rule",
+          "text": "fixed:2027-06-30"
+        }
+      ],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "ATO: Better Targeted Super Concessions is law",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law",
+      "verified_on": "2026-07-06",
+      "verified_by": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_file": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_commit": "9ab4da6",
+      "source_commit_date": "2026-08-29",
+      "corpus_url": "https://smsfcore.com/rules"
+    },
+    {
+      "id": "deadline-sar-self-preparer",
+      "title": "SMSF annual return, self-preparer",
+      "category": "deadlines",
+      "summary": "Funds lodging their own annual return lodge by 28 February, except newly registered funds and funds with an overdue prior-year return.",
+      "statute": null,
+      "figures": [
+        {
+          "label": "Rule",
+          "text": "annual:02-28"
+        }
+      ],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "ATO: lodge SMSF annual returns (QC 23331)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-administration-and-reporting/lodge-smsf-annual-returns"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-administration-and-reporting/lodge-smsf-annual-returns",
+      "verified_on": "2026-08-29",
+      "verified_by": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_file": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_commit": "9ab4da6",
+      "source_commit_date": "2026-08-29",
+      "corpus_url": "https://smsfcore.com/rules"
+    },
+    {
+      "id": "deadline-sar-new-fund",
+      "title": "SMSF annual return, newly registered fund",
+      "category": "deadlines",
+      "summary": "Newly registered funds, and funds with an overdue prior-year return, lodge by 31 October. Tax agent program dates run later.",
+      "statute": null,
+      "figures": [
+        {
+          "label": "Rule",
+          "text": "annual:10-31"
+        }
+      ],
+      "mechanics": [],
+      "sources": [
+        {
+          "label": "ATO: lodge SMSF annual returns (QC 23331)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-administration-and-reporting/lodge-smsf-annual-returns"
+        }
+      ],
+      "primary_source_url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-administration-and-reporting/lodge-smsf-annual-returns",
+      "verified_on": "2026-08-29",
+      "verified_by": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_file": "smsfcore-product/src/lib/compliance/deadlines.ts",
+      "source_commit": "9ab4da6",
+      "source_commit_date": "2026-08-29",
+      "corpus_url": "https://smsfcore.com/rules"
+    }
+  ],
+  "caps_by_fy": {
+    "2024-25": {
+      "financial_year": "2024-25",
+      "starts": "2024-07-01",
+      "ends": "2025-06-30",
+      "concessional_cap_cents": 3000000,
+      "non_concessional_cap_cents": 12000000,
+      "general_transfer_balance_cap_cents": 190000000,
+      "bring_forward_3x_below_cents": 166000000,
+      "bring_forward_2x_below_cents": 178000000,
+      "carry_forward_tsb_gate_cents": 50000000,
+      "sources": [
+        {
+          "label": "ATO: contributions caps (key rates and thresholds)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "ATO: concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: non-concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/caps/caps-math.ts"
+    },
+    "2025-26": {
+      "financial_year": "2025-26",
+      "starts": "2025-07-01",
+      "ends": "2026-06-30",
+      "concessional_cap_cents": 3000000,
+      "non_concessional_cap_cents": 12000000,
+      "general_transfer_balance_cap_cents": 200000000,
+      "bring_forward_3x_below_cents": 176000000,
+      "bring_forward_2x_below_cents": 188000000,
+      "carry_forward_tsb_gate_cents": 50000000,
+      "sources": [
+        {
+          "label": "ATO: contributions caps (key rates and thresholds)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "ATO: concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: non-concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/caps/caps-math.ts"
+    },
+    "2026-27": {
+      "financial_year": "2026-27",
+      "starts": "2026-07-01",
+      "ends": "2027-06-30",
+      "concessional_cap_cents": 3250000,
+      "non_concessional_cap_cents": 13000000,
+      "general_transfer_balance_cap_cents": 210000000,
+      "bring_forward_3x_below_cents": 184000000,
+      "bring_forward_2x_below_cents": 197000000,
+      "carry_forward_tsb_gate_cents": 50000000,
+      "sources": [
+        {
+          "label": "ATO: contributions caps (key rates and thresholds)",
+          "url": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/contributions-caps"
+        },
+        {
+          "label": "ATO: concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: non-concessional contributions cap",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/non-concessional-contributions-cap"
+        },
+        {
+          "label": "ATO: general transfer balance cap indexation 1 July 2026",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/general-transfer-balance-cap-indexation-on-1-july-2026"
+        }
+      ],
+      "verified_on": "2026-07-07",
+      "verified_by": "smsfcore-product/src/lib/caps/caps-math.ts"
+    }
+  },
+  "division_296": {
+    "commenced": "2026-07-01",
+    "first_test_date": "2027-06-30",
+    "lower_threshold_cents": 300000000,
+    "upper_threshold_cents": 1000000000,
+    "tier1_rate": 0.15,
+    "tier2_rate": 0.25,
+    "base": "realised earnings only",
+    "sources": [
+      {
+        "label": "ATO: Better Targeted Super Concessions is law",
+        "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law"
+      },
+      {
+        "label": "Treasury Laws Amendment (Better Targeted Superannuation Concessions) Act 2026",
+        "url": "https://www.legislation.gov.au/C2026A00008/latest"
+      }
+    ],
+    "verified_on": "2026-07-06",
+    "verified_by": "smsfcore-product/src/lib/div296/div296-math.ts"
+  },
+  "deadlines": [
+    {
+      "id": "tbar-quarterly",
+      "label": "TBAR quarter due",
+      "rule": "quarterly_28_days",
+      "detail": "Transfer balance events for a quarter must reach the ATO within 28 days of quarter end: 28 October, 28 January, 28 April and 28 July. All SMSFs report quarterly since 1 July 2023.",
+      "sources": [
+        {
+          "label": "ATO: transfer balance account reporting",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/reporting-and-administrative-obligations/transfer-balance-account-reporting"
+        },
+        {
+          "label": "ATO: TBAR instructions, when to lodge",
+          "url": "https://www.ato.gov.au/forms-and-instructions/superannuation-transfer-balance-account-report-instructions/when-to-lodge"
+        }
+      ],
+      "verified_on": "2026-07-10"
+    },
+    {
+      "id": "pension-minimum",
+      "label": "Pension minimums paid by 30 June",
+      "rule": "fy_end",
+      "detail": "Each retirement-phase pension must have paid at least its statutory minimum by 30 June of the financial year.",
+      "sources": [
+        {
+          "label": "ATO: income stream (pension) rules and payments (SMSF)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/paying-smsf-benefits/income-stream-pension-rules-and-payments"
+        }
+      ],
+      "verified_on": "2026-07-07"
+    },
+    {
+      "id": "div296-first-test",
+      "label": "Division 296 first total super balance test",
+      "rule": "fixed:2027-06-30",
+      "detail": "Total super balance is first tested at 30 June 2027 for the commencement year of Division 296.",
+      "sources": [
+        {
+          "label": "ATO: Better Targeted Super Concessions is law",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-newsroom/better-targeted-super-concessions-is-law"
+        }
+      ],
+      "verified_on": "2026-07-06"
+    },
+    {
+      "id": "sar-self-preparer",
+      "label": "SMSF annual return, self-preparer",
+      "rule": "annual:02-28",
+      "detail": "Funds lodging their own annual return lodge by 28 February, except newly registered funds and funds with an overdue prior-year return.",
+      "sources": [
+        {
+          "label": "ATO: lodge SMSF annual returns (QC 23331)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-administration-and-reporting/lodge-smsf-annual-returns"
+        }
+      ],
+      "verified_on": "2026-08-29"
+    },
+    {
+      "id": "sar-new-fund",
+      "label": "SMSF annual return, newly registered fund",
+      "rule": "annual:10-31",
+      "detail": "Newly registered funds, and funds with an overdue prior-year return, lodge by 31 October. Tax agent program dates run later.",
+      "sources": [
+        {
+          "label": "ATO: lodge SMSF annual returns (QC 23331)",
+          "url": "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/self-managed-super-funds-smsf/smsf-administration-and-reporting/lodge-smsf-annual-returns"
+        }
+      ],
+      "verified_on": "2026-08-29"
+    }
+  ],
+  "excluded": [
+    {
+      "id": "smsf-borrowing-residential-property",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "reason": "no ato.gov.au or legislation.gov.au URL in the corpus entry, and no statute in the product citation table"
+    },
+    {
+      "id": "cgt-12-month-boundary",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "reason": "no ato.gov.au or legislation.gov.au URL in the corpus entry, and no statute in the product citation table"
+    },
+    {
+      "id": "payday-super-seven-business-days",
+      "source_file": "smsfcore-landing/content/rules.ts",
+      "reason": "no ato.gov.au or legislation.gov.au URL in the corpus entry, and no statute in the product citation table"
+    }
+  ]
+}
