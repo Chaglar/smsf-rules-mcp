@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from mcp.server.mcpserver import MCPServer
+from mcp.server.mcpserver.exceptions import ResourceError, ToolError
 
 from . import __version__
 from .caps import caps_summary, contribution_headroom
@@ -49,7 +50,7 @@ def list_rules(category: str | None = None) -> dict[str, Any]:
     rules = corpus()["rules"]
     if category:
         if category not in categories():
-            raise ValueError(f"unknown category {category!r}; known: {', '.join(categories())}")
+            raise ToolError(f"unknown category {category!r}; known: {', '.join(categories())}")
         rules = [r for r in rules if r["category"] == category]
     return {"count": len(rules), "categories": categories(), "rules": [_brief(r) for r in rules]}
 
@@ -62,7 +63,7 @@ def get_rule(id: str) -> dict[str, Any]:
     """
     rule = rules_by_id().get(id)
     if rule is None:
-        raise ValueError(f"no rule with id {id!r}; use list_rules or search_rules")
+        raise ToolError(f"no rule with id {id!r}; use list_rules or search_rules")
     return {**rule, "citation_text": citation(rule), "notice": NOTICE}
 
 
@@ -88,7 +89,10 @@ def caps(financial_year: str) -> dict[str, Any]:
 
     General information about the rules, not a licensed financial service.
     """
-    return caps_summary(financial_year)
+    try:
+        return caps_summary(financial_year)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
 
 
 @mcp.tool(name="days_until")
@@ -99,7 +103,10 @@ def days_until_tool(target: str, now: str | None = None) -> dict[str, Any]:
 
     General information about the rules, not a licensed financial service.
     """
-    return days_until(target, now)
+    try:
+        return days_until(target, now)
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
 
 
 @mcp.tool(name="contribution_headroom")
@@ -117,14 +124,17 @@ def contribution_headroom_tool(
 
     General information about the rules, not a licensed financial service.
     """
-    return contribution_headroom(
-        financial_year,
-        age_at_1_july,
-        total_super_balance_cents,
-        concessional_ytd_cents,
-        non_concessional_ytd_cents,
-        unused_concessional_cents,
-    )
+    try:
+        return contribution_headroom(
+            financial_year,
+            age_at_1_july,
+            total_super_balance_cents,
+            concessional_ytd_cents,
+            non_concessional_ytd_cents,
+            unused_concessional_cents,
+        )
+    except ValueError as exc:
+        raise ToolError(str(exc)) from exc
 
 
 @mcp.resource("rules://index", mime_type="text/plain")
@@ -142,7 +152,7 @@ def rule_text(id: str) -> str:
     """One rule as plain text with figures, mechanics and citation."""
     rule = rules_by_id().get(id)
     if rule is None:
-        raise ValueError(f"no rule with id {id!r}")
+        raise ResourceError(f"no rule with id {id!r}")
     return citation(rule)
 
 
