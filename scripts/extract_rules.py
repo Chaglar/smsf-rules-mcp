@@ -165,7 +165,7 @@ def check_clean(record: dict[str, Any]) -> None:
     for w in BANNED:
         if w in blob:
             raise SystemExit(f"record {record['id']} carries banned term {w!r}")
-    if "—" in blob:
+    if "\u2014" in blob:
         raise SystemExit(f"record {record['id']} carries an em-dash")
 
 
