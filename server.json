@@ -1,0 +1,24 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Chaglar/smsf-rules-mcp",
+  "title": "SMSF Rules",
+  "description": "Australian SMSF contribution caps, thresholds and deadlines with primary-source citations",
+  "repository": {
+    "url": "https://github.com/Chaglar/smsf-rules-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://smsfcore.com/rules",
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "smsf-rules-mcp",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

@@ -6,6 +6,8 @@ It is read-only and deterministic: no model calls, no network at call time. The 
 
 General information about the rules, not a licensed financial service.
 
+<!-- mcp-name: io.github.Chaglar/smsf-rules-mcp -->
+
 ## Install
 
 Requires [uv](https://docs.astral.sh/uv/) (Python 3.12 is fetched automatically).
