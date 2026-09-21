@@ -1,0 +1,6 @@
+.git
+.venv
+tests
+scripts
+uv.lock
+__pycache__
