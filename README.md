@@ -1,5 +1,7 @@
 # smsf-rules-mcp
 
+[![Chaglar/smsf-rules-mcp MCP server](https://glama.ai/mcp/servers/Chaglar/smsf-rules-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Chaglar/smsf-rules-mcp)
+
 An MCP server that answers questions about Australian SMSF contribution caps, total super balance thresholds, Division 296 thresholds, pension minimums and lodgment deadlines, with an ato.gov.au or legislation.gov.au citation on every answer.
 
 It is read-only and deterministic: no model calls, no network at call time. The data is a single `rules.json` generated from the TypeScript corpus behind [smsfcore.com/rules](https://smsfcore.com/rules), and every record carries a primary source URL, the file and commit it came from, and the date the figures were last verified against the ATO page.
